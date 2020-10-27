@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import Post from "./Post";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         ></img>
       </div>
       <h1>Hello World</h1>
+      <Post />
     </div>
   );
 }
