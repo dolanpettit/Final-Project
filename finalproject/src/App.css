@@ -15,3 +15,8 @@
 
 .app__headerImage {
 }
+
+.app__signup {
+  display: flex;
+  flex-direction: column;
+}
