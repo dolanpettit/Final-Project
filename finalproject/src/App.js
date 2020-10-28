@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Post from "./Post";
 import socialite from "./socialite.png";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { Button, Input } from "@material-ui/core";
@@ -38,6 +38,31 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        //log in
+        console.log(authUser);
+        setUser(authUser);
+        if (authUser.displayName) {
+          //dont update username
+        } else {
+          return authUser.updateProfile({
+            displayName: username,
+          });
+        }
+      } else {
+        setUser(null);
+        //logged out
+      }
+    });
+    return () => {
+      //perform cleanup
+      unsubscribe();
+    };
+  }, [user, username]);
 
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) => {
@@ -50,7 +75,18 @@ function App() {
     });
   }, []);
 
-  const signUp = (event) => {};
+  const signUp = (event) => {
+    event.preventDefault();
+
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        return authUser.user.updateProfile({
+          displayName: username,
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <div className="app">
@@ -87,7 +123,9 @@ function App() {
         <img className="app__headerImage" src={socialite} alt="socialite"></img>
       </div>
 
-      <Button onClick={() => setOpen(true)}>Sign Up</Button>
+      <Button type="submit" onClick={() => setOpen(true)}>
+        Sign Up
+      </Button>
 
       {posts.map(({ id, post }) => (
         <Post
