@@ -4,7 +4,6 @@
 
 .app {
   background-color: #fafafa;
-  height: 100vh;
 }
 
 .app__header {
@@ -14,4 +13,10 @@
   object-fit: contain;
 }
 
+.app__headerImage {
+}
 
+.app__signup {
+  display: flex;
+  flex-direction: column;
+}
