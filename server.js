@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const router = require("express").Router();
 const PORT = process.env.PORT || 3001;
 
 // Define middleware here
@@ -11,8 +10,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-router.use(function (req, res) {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+app.use(function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
 // Start the API server
