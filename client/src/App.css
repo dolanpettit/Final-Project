@@ -29,4 +29,6 @@
 }
 
 .app__postsLeft {
+  margin: auto;
+  width: 50%;
 }
